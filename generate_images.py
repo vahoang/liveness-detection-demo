@@ -3,6 +3,7 @@ import numpy as np
 import argparse
 import cv2
 import os
+from pathlib import Path
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -51,6 +52,9 @@ net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 vs = cv2.VideoCapture(args["input"])
 read = 0
 saved = 0
+
+# create directory if not exits
+Path(args["output"]).mkdir(parents=True, exist_ok=True)
 
 # loop over frames from the video file stream
 while True:
