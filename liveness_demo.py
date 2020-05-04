@@ -88,33 +88,36 @@ while True:
             endX = min(w, endX)
             endY = min(h, endY)
 
-            # extract the face ROI and then preproces it in the exact
-            # same manner as our training data
-            face = frame[startY:endY, startX:endX]
-            face = cv2.resize(face, (32, 32))
-            face = face.astype("float") / 255.0
-            face = img_to_array(face)
-            face = np.expand_dims(face, axis=0)
+            try:
+                # extract the face ROI and then preproces it in the exact
+                # same manner as our training data
+                face = frame[startY:endY, startX:endX]
+                face = cv2.resize(face, (32, 32))
+                face = face.astype("float") / 255.0
+                face = img_to_array(face)
+                face = np.expand_dims(face, axis=0)
 
-            # pass the face ROI through the trained liveness detector
-            # model to determine if the face is "real" or "fake"
-            preds = model.predict(face)[0]
-            j = np.argmax(preds)
-            label = le.classes_[j]
+                # pass the face ROI through the trained liveness detector
+                # model to determine if the face is "real" or "fake"
+                preds = model.predict(face)[0]
+                j = np.argmax(preds)
+                label = le.classes_[j]
 
-            # draw the label and bounding box on the frame
-            label = "{}: {:.4f}".format(label, preds[j])
-            cv2.putText(
-                frame,
-                label,
-                (startX, startY - 10),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.5,
-                (0, 0, 255),
-                2,
-            )
-            cv2.rectangle(frame, (startX, startY),
-                          (endX, endY), (0, 0, 255), 2)
+                # draw the label and bounding box on the frame
+                label = "{}: {:.4f}".format(label, preds[j])
+                cv2.putText(
+                    frame,
+                    label,
+                    (startX, startY - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.5,
+                    (0, 0, 255),
+                    2,
+                )
+                cv2.rectangle(frame, (startX, startY),
+                              (endX, endY), (0, 0, 255), 2)
+            except Exception as error:
+                print("Frame error")
 
     # show the output frame and wait for a key press
     cv2.imshow("Frame", frame)
