@@ -36,7 +36,7 @@ oauthlib==3.1.0
 opencv-contrib-python==3.4.4.19
 opt-einsum==3.2.1
 pathspec==0.8.0
-Pillow==7.1.2
+Pillow==9.0.1
 progressbar2==3.51.0
 protobuf==3.11.3
 pyasn1==0.4.8
